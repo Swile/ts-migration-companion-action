@@ -11,14 +11,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          npm install
-      - run: |
-          npm run all
+      - run: npm install
+      - run: npm run all
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      pull-requests: write
+      issues: write
     steps:
-      - uses: actions/checkout@v3
+      - name: Create tsc-output directory
+        run: mkdir /tmp/tsc-output
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          clean: false
+          ref: main
+      - name: Run npm install on main branch
+        run: npm ci
+      - name: Typecheck dependencies on main branch
+        run: npm run build > /tmp/tsc-output/main.txt
+        continue-on-error: true
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+      - name: Run npm install on PR branch
+        run: npm ci
+      - name: Typecheck dependencies on pr branch
+        run: npm run build > /tmp/tsc-output/pr.txt
+        continue-on-error: true
       - uses: ./
         with:
-          milliseconds: 10000
+          master_tsc_output_path: /tmp/tsc-output/main.txt
+          pr_tsc_output_path: /tmp/tsc-output/pr.txt
+          tsc_rootdir: src
