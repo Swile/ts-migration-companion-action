@@ -1,11 +1,21 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
-inputs:
-  milliseconds: # change this
-    required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+name: 'tsc-report-analyzer-action'
+description: 'GitHub Action help you to track your TypeScript Migration coverage'
+author: 'jdemangeon'
 runs:
   using: 'node16'
   main: 'dist/index.js'
+inputs:
+  github-token:
+    description: The GitHub token used to create an authenticated client
+    default: ${{ github.token }}
+    required: false
+  master_tsc_output_path:
+    description: The path to the tsc output file for master branch
+    required: true
+  pr_tsc_output_path:
+    description: The path to the tsc output file for the pull request branch
+    required: true
+  tsc_rootdir:
+    description: Define the root directory used by tsc
+    required: false
+    default: src
