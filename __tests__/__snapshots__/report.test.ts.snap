@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Report #getMarkdownReportComparator should return the right markdown text from report 1`] = `
+"# TypeScript Migration Companion
+
+## Global error infos
+
+
+The table below compares the error count between the master branch and your pr. Produces \`master > your PR\` when you reduce TypeScript problems.
+
+| master | pr  |
+| ------ | --- |
+| 42 | 24 |
+
+## :clap: Congratulations, your PR fixes TypeScript problems for the files below
+
+### Summary
+
+| filepath | master | pr  |
+| -------- | ------ | --- |
+| /path/to/file3.ts | 10 | 9 |
+| /path/to/file4.ts | 3 | 2 |
+
+## :muscle: Nice job, your PR reduce TypeScript problems for the files below
+
+### Summary
+
+| filepath | master | pr  |
+| -------- | ------ | --- |
+| /path/to/file1.ts | 10 | 9 |
+| /path/to/file2.ts | 3 | 2 |
+
+## :stop_sign: Beware, your PR introduce new TypeScript problems for the files below
+
+### Summary
+
+| filepath | master | pr  |
+| -------- | ------ | --- |
+| /path/to/file7.ts | 10 | 11 |
+| /path/to/file8.ts | 3 | 4 |
+
+## :warning: Ooops, your PR increase TypeScript problems for the files below
+
+### Summary
+
+| filepath | master | pr  |
+| -------- | ------ | --- |
+| /path/to/file5.ts | 10 | 11 |
+| /path/to/file6.ts | 3 | 4 |
+"
+`;

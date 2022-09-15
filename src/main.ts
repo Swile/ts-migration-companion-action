@@ -1,56 +1,41 @@
 import * as core from '@actions/core'
-import {context, getOctokit} from '@actions/github'
+import {getOctokit} from '@actions/github'
 
 import comparator from './comparator'
+import {createOrReplaceGithubBotComment} from './github'
 
-async function run(): Promise<void> {
+export const getActionInputs = (): {
+  token: string
+  masterTscOutputPath: string
+  prTscOutputPath: string
+  tscRootDir: string
+} => ({
+  token: core.getInput('github-token', {required: true}),
+  masterTscOutputPath: core.getInput('master_tsc_output_path', {
+    required: true,
+    trimWhitespace: true
+  }),
+  prTscOutputPath: core.getInput('pr_tsc_output_path', {
+    required: true,
+    trimWhitespace: true
+  }),
+  tscRootDir: core.getInput('tsc_rootdir')
+})
+
+export async function run(): Promise<void> {
   try {
-    const token = core.getInput('github-token', {required: true})
+    const {token, ...comparatorOptions} = getActionInputs()
+
+    const markdown = await comparator(comparatorOptions)
+
     const github = getOctokit(token)
 
-    const markdown = await comparator({
-      masterTscOutputPath: core.getInput('master_tsc_output_path', {
-        required: true,
-        trimWhitespace: true
-      }),
-      prTscOutputPath: core.getInput('pr_tsc_output_path', {
-        required: true,
-        trimWhitespace: true
-      }),
-      tscRootDir: core.getInput('tsc_rootdir')
-    })
-
-    const response = await github.rest.issues.listComments({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      issue_number: context.issue.number
-    })
-
-    const comments = response.status === 200 ? response.data : []
-
-    await Promise.all(
-      comments.map(async comment => {
-        if (comment.user?.login === 'github-actions[bot]') {
-          return github.rest.issues.deleteComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.issue.number,
-            comment_id: comment.id
-          })
-        }
-        return Promise.resolve(null)
-      })
-    )
-
-    await github.rest.issues.createComment({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      issue_number: context.issue.number,
-      body: markdown
-    })
+    await createOrReplaceGithubBotComment(github, markdown)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
 }
 
-run()
+if (require.main === module) {
+  run()
+}

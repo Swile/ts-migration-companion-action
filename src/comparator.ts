@@ -1,6 +1,6 @@
 /* eslint-disable github/array-foreach */
 import {getErrorByFileReport} from './analyzer'
-import {getMarkdownReportComparator, type MergedTsErrorByFile} from './github'
+import {getMarkdownReportComparator, type MergedTsErrorByFile} from './report'
 import {ParsedTsError, parseTscOutput} from './parser'
 import {readTscOutputByFilepath} from './reader'
 
