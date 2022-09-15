@@ -1,25 +1,20 @@
-name: 'build-test'
-on: # rebuild any PRs and main branch changes
+name: 'Test action'
+
+permissions:
+  contents: read
+  packages: read
+  pull-requests: write
+  issues: write
+
+on:
   pull_request:
-  push:
     branches:
-      - main
-      - 'releases/*'
+      - master
 
 jobs:
-  build: # make sure build/ci work properly
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: npm install
-      - run: npm run all
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: read
-      pull-requests: write
-      issues: write
+
     steps:
       - name: Create tsc-output directory
         run: mkdir /tmp/tsc-output
