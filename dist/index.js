@@ -46,7 +46,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 /* eslint-disable github/array-foreach */
 const analyzer_1 = __nccwpck_require__(903);
-const github_1 = __nccwpck_require__(5928);
+const report_1 = __nccwpck_require__(8269);
 const parser_1 = __nccwpck_require__(267);
 const reader_1 = __nccwpck_require__(7433);
 function comparator({ masterTscOutputPath, prTscOutputPath, tscRootDir }) {
@@ -103,7 +103,7 @@ function comparator({ masterTscOutputPath, prTscOutputPath, tscRootDir }) {
         const decreasedList = mergedReport.filter(merged => {
             return merged.pr < merged.master && merged.pr > 0;
         });
-        return (0, github_1.getMarkdownReportComparator)({
+        return (0, report_1.getMarkdownReportComparator)({
             global: {
                 master: masterAst.length,
                 pr: prAst.length
@@ -122,6 +122,208 @@ exports["default"] = comparator;
 /***/ }),
 
 /***/ 5928:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createOrReplaceGithubBotComment = exports.isGithubBotComment = void 0;
+const github_1 = __nccwpck_require__(5438);
+const isGithubBotComment = (comment) => { var _a; return ((_a = comment.user) === null || _a === void 0 ? void 0 : _a.login) === 'github-actions[bot]'; };
+exports.isGithubBotComment = isGithubBotComment;
+const createOrReplaceGithubBotComment = (githubClient, message) => __awaiter(void 0, void 0, void 0, function* () {
+    const contextArgs = {
+        owner: github_1.context.repo.owner,
+        repo: github_1.context.repo.repo,
+        issue_number: github_1.context.issue.number
+    };
+    const response = yield githubClient.rest.issues.listComments(contextArgs);
+    const comments = response.status === 200 ? response.data : [];
+    const lastGithubBotComment = comments.find(comment => (0, exports.isGithubBotComment)(comment));
+    if (lastGithubBotComment) {
+        yield githubClient.rest.issues.deleteComment(Object.assign(Object.assign({}, contextArgs), { comment_id: lastGithubBotComment.id }));
+    }
+    yield githubClient.rest.issues.createComment(Object.assign(Object.assign({}, contextArgs), { body: message }));
+});
+exports.createOrReplaceGithubBotComment = createOrReplaceGithubBotComment;
+
+
+/***/ }),
+
+/***/ 3109:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = exports.getActionInputs = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const github_1 = __nccwpck_require__(5438);
+const comparator_1 = __importDefault(__nccwpck_require__(7283));
+const github_2 = __nccwpck_require__(5928);
+const getActionInputs = () => ({
+    token: core.getInput('github-token', { required: true }),
+    masterTscOutputPath: core.getInput('master_tsc_output_path', {
+        required: true,
+        trimWhitespace: true
+    }),
+    prTscOutputPath: core.getInput('pr_tsc_output_path', {
+        required: true,
+        trimWhitespace: true
+    }),
+    tscRootDir: core.getInput('tsc_rootdir')
+});
+exports.getActionInputs = getActionInputs;
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const _a = (0, exports.getActionInputs)(), { token } = _a, comparatorOptions = __rest(_a, ["token"]);
+            const markdown = yield (0, comparator_1.default)(comparatorOptions);
+            const github = (0, github_1.getOctokit)(token);
+            yield (0, github_2.createOrReplaceGithubBotComment)(github, markdown);
+        }
+        catch (error) {
+            if (error instanceof Error)
+                core.setFailed(error.message);
+        }
+    });
+}
+exports.run = run;
+if (require.main === require.cache[eval('__filename')]) {
+    run();
+}
+
+
+/***/ }),
+
+/***/ 267:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseErrorLine = exports.parseTscOutput = exports.normalizeFilepath = void 0;
+const node_path_1 = __importDefault(__nccwpck_require__(9411));
+function normalizeFilepath(filepath) {
+    const extension = node_path_1.default.extname(filepath);
+    const basepath = node_path_1.default.join(node_path_1.default.dirname(filepath), node_path_1.default.basename(filepath, extension));
+    return {
+        basepath,
+        extension
+    };
+}
+exports.normalizeFilepath = normalizeFilepath;
+function parseTscOutput(output, include) {
+    const ast = output
+        .split('\n')
+        .filter(line => include.some(prefix => line.startsWith(prefix)))
+        .map(parseErrorLine);
+    return ast;
+}
+exports.parseTscOutput = parseTscOutput;
+function parseErrorLine(line) {
+    const filepath = line.substring(0, line.indexOf('('));
+    const position = line.substring(line.indexOf('(') + 1, line.indexOf(')'));
+    const error = line.substring(line.indexOf(': error ') + ': error '.length);
+    const code = error.substring(0, error.indexOf(': '));
+    const message = error.substring(error.indexOf(': ') + 2);
+    const { basepath, extension } = normalizeFilepath(filepath);
+    return { basepath, extension, position, error, code, message };
+}
+exports.parseErrorLine = parseErrorLine;
+
+
+/***/ }),
+
+/***/ 7433:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.readTscOutputByFilepath = void 0;
+const promises_1 = __importDefault(__nccwpck_require__(3977));
+function readTscOutputByFilepath(filepath) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield promises_1.default.readFile(filepath, { encoding: 'utf8' });
+    });
+}
+exports.readTscOutputByFilepath = readTscOutputByFilepath;
+
+
+/***/ }),
+
+/***/ 8269:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -213,172 +415,6 @@ function getMarkdownReportComparator({ global, fixedList, openedList, increasedL
     });
 }
 exports.getMarkdownReportComparator = getMarkdownReportComparator;
-
-
-/***/ }),
-
-/***/ 3109:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(2186));
-const github_1 = __nccwpck_require__(5438);
-const comparator_1 = __importDefault(__nccwpck_require__(7283));
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const token = core.getInput('github-token', { required: true });
-            const github = (0, github_1.getOctokit)(token);
-            const markdown = yield (0, comparator_1.default)({
-                masterTscOutputPath: core.getInput('master_tsc_output_path', {
-                    required: true,
-                    trimWhitespace: true
-                }),
-                prTscOutputPath: core.getInput('pr_tsc_output_path', {
-                    required: true,
-                    trimWhitespace: true
-                }),
-                tscRootDir: core.getInput('tsc_rootdir')
-            });
-            const response = yield github.rest.issues.listComments({
-                owner: github_1.context.repo.owner,
-                repo: github_1.context.repo.repo,
-                issue_number: github_1.context.issue.number
-            });
-            const comments = response.status === 200 ? response.data : [];
-            yield Promise.all(comments.map((comment) => __awaiter(this, void 0, void 0, function* () {
-                var _a;
-                if (((_a = comment.user) === null || _a === void 0 ? void 0 : _a.login) === 'github-actions[bot]') {
-                    return github.rest.issues.deleteComment({
-                        owner: github_1.context.repo.owner,
-                        repo: github_1.context.repo.repo,
-                        issue_number: github_1.context.issue.number,
-                        comment_id: comment.id
-                    });
-                }
-                return Promise.resolve(null);
-            })));
-            yield github.rest.issues.createComment({
-                owner: github_1.context.repo.owner,
-                repo: github_1.context.repo.repo,
-                issue_number: github_1.context.issue.number,
-                body: markdown
-            });
-        }
-        catch (error) {
-            if (error instanceof Error)
-                core.setFailed(error.message);
-        }
-    });
-}
-run();
-
-
-/***/ }),
-
-/***/ 267:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.parseTscOutput = void 0;
-const node_path_1 = __importDefault(__nccwpck_require__(9411));
-function normalizeFilepath(filepath) {
-    const extension = node_path_1.default.extname(filepath);
-    const basepath = node_path_1.default.join(node_path_1.default.dirname(filepath), node_path_1.default.basename(filepath, extension));
-    return {
-        basepath,
-        extension
-    };
-}
-function parseTscOutput(output, include) {
-    const ast = output
-        .split('\n')
-        .filter(line => include.some(prefix => line.startsWith(prefix)))
-        .map(parseErrorLine);
-    return ast;
-}
-exports.parseTscOutput = parseTscOutput;
-function parseErrorLine(line) {
-    const filepath = line.substring(0, line.indexOf('('));
-    const position = line.substring(line.indexOf('(') + 1, line.indexOf(')'));
-    const error = line.substring(line.indexOf(': error ') + ': error '.length);
-    const code = error.substring(0, error.indexOf(': '));
-    const message = error.substring(error.indexOf(': ') + 2);
-    const { basepath, extension } = normalizeFilepath(filepath);
-    return { basepath, extension, position, error, code, message };
-}
-
-
-/***/ }),
-
-/***/ 7433:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.readTscOutputByFilepath = void 0;
-const promises_1 = __importDefault(__nccwpck_require__(3292));
-function readTscOutputByFilepath(filepath) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield promises_1.default.readFile(filepath, { encoding: 'utf8' });
-    });
-}
-exports.readTscOutputByFilepath = readTscOutputByFilepath;
 
 
 /***/ }),
@@ -10332,14 +10368,6 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ 3292:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("fs/promises");
-
-/***/ }),
-
 /***/ 3685:
 /***/ ((module) => {
 
@@ -10361,6 +10389,14 @@ module.exports = require("https");
 
 "use strict";
 module.exports = require("net");
+
+/***/ }),
+
+/***/ 3977:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs/promises");
 
 /***/ }),
 

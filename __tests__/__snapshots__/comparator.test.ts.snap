@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comparator should return an empty comparison table if tscRootDir is not right 1`] = `
+"# TypeScript Migration Companion
+
+## Global error infos
+
+
+The table below compares the error count between the master branch and your pr. Produces \`master > your PR\` when you reduce TypeScript problems.
+
+| master | pr  |
+| ------ | --- |
+| 0 | 0 |
+"
+`;
+
+exports[`Comparator should return the right markdown comparison when PR add errors 1`] = `
+"# TypeScript Migration Companion
+
+## Global error infos
+
+
+The table below compares the error count between the master branch and your pr. Produces \`master > your PR\` when you reduce TypeScript problems.
+
+| master | pr  |
+| ------ | --- |
+| 2 | 6 |
+
+## :warning: Ooops, your PR increase TypeScript problems for the files below
+
+### Summary
+
+| filepath | master | pr  |
+| -------- | ------ | --- |
+| src/api/v0/serializers/utils/serialize-types | 2 | 6 |
+
+### Details
+
+
+<details>
+<summary>undefined</summary>
+<p>
+
+| position | error |
+| -------- | ----- |
+| undefined#L4,26 | Parameter 'value' implicitly has an 'any' type. |
+| undefined#L17,33 | No overload matches this call. |
+| undefined#L17,46 | Expected 0 arguments, but got 1. |
+| undefined#L20,24 | Parameter 'date' implicitly has an 'any' type. |
+| undefined#L23,31 | No overload matches this call. |
+| undefined#L23,44 | Expected 0 arguments, but got 1. |
+
+
+</p>
+</details>
+
+"
+`;
+
+exports[`Comparator should return the right markdown comparison when PR improve errors 1`] = `
+"# TypeScript Migration Companion
+
+## Global error infos
+
+
+The table below compares the error count between the master branch and your pr. Produces \`master > your PR\` when you reduce TypeScript problems.
+
+| master | pr  |
+| ------ | --- |
+| 6 | 2 |
+
+## :muscle: Nice job, your PR reduce TypeScript problems for the files below
+
+### Summary
+
+| filepath | master | pr  |
+| -------- | ------ | --- |
+| src/api/v0/serializers/utils/serialize-types | 6 | 2 |
+"
+`;

@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-function normalizeFilepath(filepath: string): {
+export function normalizeFilepath(filepath: string): {
   basepath: string
   extension: string
 } {
@@ -36,7 +36,7 @@ export function parseTscOutput(
   return ast
 }
 
-function parseErrorLine(line: string): ParsedTsError {
+export function parseErrorLine(line: string): ParsedTsError {
   const filepath = line.substring(0, line.indexOf('('))
   const position = line.substring(line.indexOf('(') + 1, line.indexOf(')'))
   const error = line.substring(line.indexOf(': error ') + ': error '.length)
