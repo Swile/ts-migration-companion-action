@@ -1,0 +1,47 @@
+{
+  "name": "ts-migration-companion-action",
+  "version": "0.0.0",
+  "private": true,
+  "description": "GitHub Action help you to track your TypeScript Migration coverage",
+  "main": "lib/main.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
+    "lint": "eslint src/**/*.ts",
+    "package": "ncc build --source-map --license licenses.txt",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com:TheMenu/ts-migration-companion-action.git"
+  },
+  "keywords": [
+    "actions",
+    "node"
+  ],
+  "author": "jdemangeon",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "1.9.1",
+    "@actions/github": "^5.0.3",
+    "json2md": "^1.13.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.5.2",
+    "@types/json2md": "^1.5.1",
+    "@types/node": "^18.7.18",
+    "@typescript-eslint/parser": "^5.37.0",
+    "@vercel/ncc": "0.34.0",
+    "eslint": "^8.23.1",
+    "eslint-plugin-github": "^4.3.7",
+    "eslint-plugin-jest": "^27.0.4",
+    "jest": "^27.2.5",
+    "js-yaml": "^4.1.0",
+    "prettier": "2.7.1",
+    "ts-jest": "^27.1.2",
+    "typescript": "4.8.3"
+  }
+}
