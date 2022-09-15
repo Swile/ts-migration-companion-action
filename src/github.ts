@@ -17,15 +17,17 @@ export const createOrReplaceGithubBotComment = async (
   const response = await githubClient.rest.issues.listComments(contextArgs)
   const comments = response.status === 200 ? response.data : []
 
-  const lastGithubBotComment = comments.find(comment =>
-    isGithubBotComment(comment)
-  )
-  if (lastGithubBotComment) {
-    await githubClient.rest.issues.deleteComment({
-      ...contextArgs,
-      comment_id: lastGithubBotComment.id
+  await Promise.all(
+    comments.map(async comment => {
+      if (isGithubBotComment(comment)) {
+        return githubClient.rest.issues.deleteComment({
+          ...contextArgs,
+          comment_id: comment.id
+        })
+      }
+      return Promise.resolve(null)
     })
-  }
+  )
 
   await githubClient.rest.issues.createComment({
     ...contextArgs,

@@ -148,10 +148,12 @@ const createOrReplaceGithubBotComment = (githubClient, message) => __awaiter(voi
     };
     const response = yield githubClient.rest.issues.listComments(contextArgs);
     const comments = response.status === 200 ? response.data : [];
-    const lastGithubBotComment = comments.find(comment => (0, exports.isGithubBotComment)(comment));
-    if (lastGithubBotComment) {
-        yield githubClient.rest.issues.deleteComment(Object.assign(Object.assign({}, contextArgs), { comment_id: lastGithubBotComment.id }));
-    }
+    yield Promise.all(comments.map((comment) => __awaiter(void 0, void 0, void 0, function* () {
+        if ((0, exports.isGithubBotComment)(comment)) {
+            return githubClient.rest.issues.deleteComment(Object.assign(Object.assign({}, contextArgs), { comment_id: comment.id }));
+        }
+        return Promise.resolve(null);
+    })));
     yield githubClient.rest.issues.createComment(Object.assign(Object.assign({}, contextArgs), { body: message }));
 });
 exports.createOrReplaceGithubBotComment = createOrReplaceGithubBotComment;

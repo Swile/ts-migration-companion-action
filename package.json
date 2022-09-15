@@ -1,5 +1,5 @@
 {
-  "name": "tsc-report-analyzer-action",
+  "name": "ts-migration-companion-action",
   "version": "0.0.0",
   "private": true,
   "description": "GitHub Action help you to track your TypeScript Migration coverage",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com:TheMenu/tsc-report-analyzer-action.git"
+    "url": "git+https://github.com:TheMenu/ts-migration-companion-action.git"
   },
   "keywords": [
     "actions",
