@@ -5362,13 +5362,17 @@ function json2md(data, prefix, _type) {
         }
         return content.join("\n");
     } else {
-        var type = Object.keys(data)[0],
-            func = converters[_type || type];
+        var mdText = "";
+        Object.keys(data).forEach(function (type, index, array) {
+            var func = converters[_type || type];
 
-        if (typeof func === "function") {
-            return indento(func(_type ? data : data[type], json2md), 1, prefix) + "\n";
-        }
-        throw new Error("There is no such converter: " + type);
+            if (typeof func === "function") {
+                mdText += indento(func(_type ? data : data[type], json2md), 1, prefix) + "\n";
+            } else {
+                throw new Error("There is no such converter: " + type);
+            }
+        });
+        return mdText;
     }
 }
 
