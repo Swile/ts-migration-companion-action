@@ -1,6 +1,6 @@
 {
   "name": "ts-migration-companion-action",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "GitHub Action help you to track your TypeScript Migration coverage",
   "scripts": {

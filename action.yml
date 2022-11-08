@@ -1,6 +1,9 @@
 name: 'ts-migration-companion-action'
 description: 'GitHub Action help you to track your TypeScript Migration coverage'
-author: 'jdemangeon'
+author: 'swile'
+branding:
+  icon: check-circle
+  color: green
 runs:
   using: 'node16'
   main: 'dist/index.js'
