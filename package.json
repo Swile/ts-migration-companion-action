@@ -16,13 +16,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com:TheMenu/ts-migration-companion-action.git"
+    "url": "git+https://github.com:Swile/ts-migration-companion-action.git"
   },
   "keywords": [
     "actions",
     "node"
   ],
-  "author": "jdemangeon",
+  "author": "swile",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "1.10.0",
