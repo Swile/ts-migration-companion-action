@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Parser #parseTscOutput correctly parse tsc output 1`] = `
-Array [
-  Object {
+[
+  {
     "basepath": "src/api/v0/serializers/utils/serialize-types",
     "code": "TS7006",
     "error": "TS7006: Parameter 'value' implicitly has an 'any' type.",
@@ -10,7 +10,7 @@ Array [
     "message": "Parameter 'value' implicitly has an 'any' type.",
     "position": "4,26",
   },
-  Object {
+  {
     "basepath": "src/api/v0/serializers/utils/serialize-types",
     "code": "TS2769",
     "error": "TS2769: No overload matches this call.",
@@ -18,7 +18,7 @@ Array [
     "message": "No overload matches this call.",
     "position": "17,33",
   },
-  Object {
+  {
     "basepath": "src/api/v0/serializers/utils/serialize-types",
     "code": "TS2554",
     "error": "TS2554: Expected 0 arguments, but got 1.",
@@ -26,7 +26,7 @@ Array [
     "message": "Expected 0 arguments, but got 1.",
     "position": "17,46",
   },
-  Object {
+  {
     "basepath": "src/api/v0/serializers/utils/serialize-types",
     "code": "TS7006",
     "error": "TS7006: Parameter 'date' implicitly has an 'any' type.",
@@ -34,7 +34,7 @@ Array [
     "message": "Parameter 'date' implicitly has an 'any' type.",
     "position": "20,24",
   },
-  Object {
+  {
     "basepath": "src/api/v0/serializers/utils/serialize-types",
     "code": "TS2769",
     "error": "TS2769: No overload matches this call.",
@@ -42,7 +42,7 @@ Array [
     "message": "No overload matches this call.",
     "position": "23,31",
   },
-  Object {
+  {
     "basepath": "src/api/v0/serializers/utils/serialize-types",
     "code": "TS2554",
     "error": "TS2554: Expected 0 arguments, but got 1.",
